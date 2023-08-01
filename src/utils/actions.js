@@ -6,7 +6,7 @@ export const getUserList = async (page) => {
 			`https://reqres.in/api/users?per_page=2&page=${page}`
 		);
 		return data;
-	} catch (error) {
-		return window.alert(error.message);
+	} catch (e) {
+		window.alert(e);
 	}
 };

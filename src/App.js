@@ -1,40 +1,38 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getUserList } from './utils/actions';
 
 const App = () => {
-	const [user, setUser] = useState([]);
 	const [page, setPage] = useState(1);
+	const [users, setUsers] = useState({});
+	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
-		getUserList(page).then((res) => setUser(res));
+		setLoading(true);
+		getUserList(page).then((res) => {
+			setUsers(res);
+			setLoading(false);
+		});
 	}, [page]);
+
+	const Increment = () => {
+		setPage((prevState) => ++prevState);
+	};
+
+	const Decrement = () => {
+		setPage((prevState) => --prevState);
+	};
 
 	return (
 		<div>
-			<button onClick={() => setPage((prevPage) => prevPage - 1)}>
-				Previous
-			</button>
-			<button onClick={() => setPage((prevPage) => prevPage + 1)}>Next</button>
-			{/* <div>
-				<strong>Is Loading: </strong>
-				{JSON.stringify(user.isLoading)}
+			<button onClick={() => Decrement()}>Previous</button>
+			<button onClick={() => Increment()}>Next</button>
+			<div style={{ margin: '10px' }}>Page: {JSON.stringify(users.page)}</div>
+			<div style={{ margin: '10px' }}>Loading: {JSON.stringify(loading)}</div>
+			<div style={{ margin: '10px' }}>
+				{Object.values(users)[4]?.map((user) => (
+					<div key={user.id}>{user.first_name}</div>
+				))}
 			</div>
-			<div>
-				<strong>Is Success: </strong>
-				{JSON.stringify(user.isSuccess)}
-			</div> */}
-			<div>
-				<strong>Page: </strong>
-				{JSON.stringify(user.page)}
-			</div>
-			<div>
-				<strong>Data: </strong>
-				{JSON.stringify(user.data)}
-			</div>
-			{/* <div>
-				<strong>Error Message: </strong>
-				{user.errorMessage}
-			</div> */}
 		</div>
 	);
 };
