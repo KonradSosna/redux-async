@@ -20,14 +20,15 @@ const App = () => {
 
 	return (
 		<div>
-			<button onClick={() => setPage((prevPage) => prevPage - 1)}>
+			<button onClick={() => setPage((prevPage) => --prevPage)}>
 				Previous
 			</button>
-			<button onClick={() => setPage((prevPage) => prevPage + 1)}>Next</button>
+			<button onClick={() => setPage((prevPage) => ++prevPage)}>Next</button>
 			<div style={{ margin: '10px' }}>Page: {page}</div>
 			<div style={{ margin: '10px' }}>Loading: {JSON.stringify(loading)}</div>
 			<div style={{ margin: '10px' }}>
-				{users?.data && users.data?.map((user) => <div>{user.first_name}</div>)}
+				{users?.data &&
+					users.data?.map((user) => <div key={user.id}>{user.first_name}</div>)}
 			</div>
 		</div>
 	);
