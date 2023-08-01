@@ -3,14 +3,20 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getUserList } from './utils/actions';
 
 const App = () => {
-	const user = useSelector((state) => state.user);
+	const users = useSelector((state) => state.users.data);
+	const loading = useSelector((state) => state.users.loading);
+
 	const dispatch = useDispatch();
 
 	const [page, setPage] = useState(1);
 
 	useEffect(() => {
 		dispatch(getUserList(page));
-	}, [page]);
+	}, [page, dispatch]);
+
+	if (!users?.data) {
+		return <div>Error</div>;
+	}
 
 	return (
 		<div>
@@ -18,21 +24,10 @@ const App = () => {
 				Previous
 			</button>
 			<button onClick={() => setPage((prevPage) => prevPage + 1)}>Next</button>
-			<div>
-				<strong>Is Loading: </strong>
-				{JSON.stringify(user.isLoading)}
-			</div>
-			<div>
-				<strong>Is Success: </strong>
-				{JSON.stringify(user.isSuccess)}
-			</div>
-			<div>
-				<strong>Data: </strong>
-				{JSON.stringify(user.data)}
-			</div>
-			<div>
-				<strong>Error Message: </strong>
-				{user.errorMessage}
+			<div style={{ margin: '10px' }}>Page: {page}</div>
+			<div style={{ margin: '10px' }}>Loading: {JSON.stringify(loading)}</div>
+			<div style={{ margin: '10px' }}>
+				{users?.data && users.data?.map((user) => <div>{user.first_name}</div>)}
 			</div>
 		</div>
 	);

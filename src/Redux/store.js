@@ -3,33 +3,30 @@ import { getUserList } from '../utils/actions';
 
 const initialState = {
 	data: [],
-	isLoading: false,
-	isSuccess: false,
+	loading: false,
 	errorMessage: '',
 };
 
 export const userSlice = createSlice({
-	name: 'user',
+	name: 'users',
 	initialState,
 	extraReducers: {
 		[getUserList.pending]: (state) => {
-			state.isLoading = true;
+			state.loading = true;
 		},
-		[getUserList.fulfilled]: (state, { payload }) => {
-			state.isLoading = false;
-			state.isSuccess = true;
-			state.data = payload;
+		[getUserList.fulfilled]: (state, action) => {
+			state.loading = false;
+			state.data = action.payload;
 		},
-		[getUserList.rejected]: (state, { payload }) => {
-			state.isLoading = false;
-			state.isSuccess = false;
-			state.errorMessage = payload;
+		[getUserList.rejected]: (state, action) => {
+			state.loading = false;
+			state.errorMessage = action.payload;
 		},
 	},
 });
 
 export const store = configureStore({
 	reducer: {
-		user: userSlice.reducer,
+		users: userSlice.reducer,
 	},
 });

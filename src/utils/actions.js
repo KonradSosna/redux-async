@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 export const getUserList = createAsyncThunk(
-	'user/getUserList',
+	'getUserList',
 	async (page, { rejectWithValue }) => {
 		try {
 			const { data } = await axios.get(
@@ -10,7 +10,7 @@ export const getUserList = createAsyncThunk(
 			);
 			return data;
 		} catch (error) {
-			return rejectWithValue(error.message);
+			window.alert(error.message);
 		}
 	}
 );
