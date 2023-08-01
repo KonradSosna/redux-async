@@ -1,25 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getUserList } from './utils/actions';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App = () => {
+	const user = useSelector((state) => state.user);
+	const dispatch = useDispatch();
+
+	const [page, setPage] = useState(1);
+
+	useEffect(() => {
+		dispatch(getUserList(page));
+	}, [page]);
+
+	return (
+		<div>
+			<button onClick={() => setPage((prevPage) => prevPage - 1)}>
+				Previous
+			</button>
+			<button onClick={() => setPage((prevPage) => prevPage + 1)}>Next</button>
+			<div>
+				<strong>Is Loading: </strong>
+				{JSON.stringify(user.isLoading)}
+			</div>
+			<div>
+				<strong>Is Success: </strong>
+				{JSON.stringify(user.isSuccess)}
+			</div>
+			<div>
+				<strong>Data: </strong>
+				{JSON.stringify(user.data)}
+			</div>
+			<div>
+				<strong>Error Message: </strong>
+				{user.errorMessage}
+			</div>
+		</div>
+	);
+};
 
 export default App;
